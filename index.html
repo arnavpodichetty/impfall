@@ -598,6 +598,17 @@
           <div style="padding:12px 20px 28px;">
             <div onClick="{{ goResults }}" style="padding:18px; text-align:center; background:linear-gradient(180deg,#b3202f,#7a1620); color:#f6ecd2; font-family:'Cinzel',serif; font-weight:700; font-size:17px; letter-spacing:.08em; border-radius:14px; box-shadow:0 8px 28px rgba(178,32,47,.4); cursor:pointer;" class="imp-btn">REVEAL THE JESTER</div>
           </div>
+
+          <!-- TIME'S UP popup -->
+          <sc-if value="{{ showTimeUpPopup }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; inset:0; background:rgba(8,4,10,.85); display:flex; align-items:center; justify-content:center; padding:28px; animation:imp-fade-in .2s ease both;">
+              <div style="background:#16101a; border-radius:18px; padding:30px 26px; text-align:center; border:1px solid rgba(200,162,76,.3); max-width:300px; animation:imp-rise .3s ease both;">
+                <div style="font-family:'Cinzel Decorative',serif; font-weight:700; font-size:24px; color:#e6cb7e;">Time to Vote!</div>
+                <div style="font-family:'EB Garamond',serif; font-size:14px; color:#b9c6df; margin-top:8px; line-height:1.4;">The clock has run out — cast your votes and unmask the jester.</div>
+                <div onClick="{{ dismissTimeUp }}" style="margin-top:22px; padding:14px; background:linear-gradient(180deg,#b3202f,#7a1620); color:#f6ecd2; font-family:'Cinzel',serif; font-weight:700; font-size:15px; letter-spacing:.05em; border-radius:10px; cursor:pointer;" class="imp-btn">GOT IT</div>
+              </div>
+            </div>
+          </sc-if>
         </div>
       </sc-if>
 
@@ -665,6 +676,7 @@ class Component extends DCLogic {
     roundRoleMap: {},
     roundSpyRoleMap: {},
     secondsLeft: null,
+    timeUp: false,
   };
 
   componentDidMount() {
@@ -709,15 +721,15 @@ class Component extends DCLogic {
   __startTimer(minutes) {
     this.__clearTimer();
     if (!minutes) {
-      this.setState({ secondsLeft: null });
+      this.setState({ secondsLeft: null, timeUp: false });
       return;
     }
-    this.setState({ secondsLeft: minutes * 60 });
+    this.setState({ secondsLeft: minutes * 60, timeUp: false });
     this.__timerId = setInterval(() => {
       const left = (this.state.secondsLeft || 0) - 1;
       if (left <= 0) {
         this.__clearTimer();
-        this.setState({ secondsLeft: 0 });
+        this.setState({ secondsLeft: 0, timeUp: true });
       } else {
         this.setState({ secondsLeft: left });
       }
@@ -1044,9 +1056,11 @@ class Component extends DCLogic {
       },
       goVoting: () => { this.setState({ screen: 'voting' }); this.__startTimer(st.timeLimit); },
       goResults: () => { this.__clearTimer(); this.setState({ screen: 'results' }); },
-      backToLobby: () => { this.__clearTimer(); this.setState({ screen: 'lobby', vote: null, viewed: {}, activePlayer: null, cardOpen: false, roundSpyIndices: null, secondsLeft: null }); },
-      backToReveal: () => { this.__clearTimer(); this.setState({ screen: 'reveal', vote: null, activePlayer: null, cardOpen: false, secondsLeft: null }); },
-      playAgain: () => { this.__clearTimer(); this.setState({ screen: 'lobby', vote: null, viewed: {}, activePlayer: null, cardOpen: false, roundSpyIndices: null, secondsLeft: null }); },
+      backToLobby: () => { this.__clearTimer(); this.setState({ screen: 'lobby', vote: null, viewed: {}, activePlayer: null, cardOpen: false, roundSpyIndices: null, secondsLeft: null, timeUp: false }); },
+      backToReveal: () => { this.__clearTimer(); this.setState({ screen: 'reveal', vote: null, activePlayer: null, cardOpen: false, secondsLeft: null, timeUp: false }); },
+      playAgain: () => { this.__clearTimer(); this.setState({ screen: 'lobby', vote: null, viewed: {}, activePlayer: null, cardOpen: false, roundSpyIndices: null, secondsLeft: null, timeUp: false }); },
+      dismissTimeUp: () => this.setState({ timeUp: false }),
+      showTimeUpPopup: st.timeUp,
       hasVote: st.vote !== null, notHasVote: st.vote === null,
       voteUpper: voteName.toUpperCase(),
       caughtSpy: st.vote !== null && players.find(p => p.name === st.vote)?.spy,
