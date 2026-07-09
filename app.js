@@ -78,6 +78,7 @@
       wordCategories: ['Food', 'Animals', 'Objects', 'Movies'],
       selCategories: ['Locations', 'Biomes', 'Historical Eras', 'Movie Genres', 'Food', 'Animals', 'Objects', 'Movies'],
       roundJesterIndices: null,
+      roundStarterIdx: null,
       roundCategory: 'Locations',
       roundWord: '',
       roundRoleMap: {},
@@ -277,6 +278,7 @@
           ? jesterNames.filter(n => n !== (ap ? ap.name : '')).join(', ')
           : null,
         apShowAllies: apIsUndisguisedJester && st.jestersKnow && jesterNames.length > 1,
+        starterName: st.playerList[st.roundStarterIdx] || st.playerList[0],
         gameCategory: roundCategory,
         roundWordBlockStyle: '',
         roundWordDisplay: st.roundWord,
@@ -509,7 +511,8 @@
             }
           }
           nextRound = { ...nextRound, roundJesterWordMap };
-          this.setState({ screen: 'reveal', viewed: {}, activePlayer: null, cardOpen: false, jesterCount: newJesterCount, roundJesterIndices: selectedJesterIndices, ...nextRound });
+          const roundStarterIdx = Math.floor(Math.random() * st.playerList.length);
+          this.setState({ screen: 'reveal', viewed: {}, activePlayer: null, cardOpen: false, jesterCount: newJesterCount, roundJesterIndices: selectedJesterIndices, roundStarterIdx, ...nextRound });
         },
         goVoting: () => { this.setState({ screen: 'voting' }); this.__startTimer(st.timeLimit); },
         goResults: () => { this.__clearTimer(); this.setState({ screen: 'results' }); },
@@ -879,7 +882,7 @@
 
     renderVoting(v) {
       const steps = [
-        { badge: '#2e5bb0', bg: 'linear-gradient(135deg,#14254a,#0d1a38)', border: 'rgba(46,91,176,.35)', num: '1', numColor: '#fff', icon: ICON_STEP1, title: 'Opening Statements', body: 'The first player opens the round — go around the table.' },
+        { badge: '#2e5bb0', bg: 'linear-gradient(135deg,#14254a,#0d1a38)', border: 'rgba(46,91,176,.35)', num: '1', numColor: '#fff', icon: ICON_STEP1, title: 'Opening Statements', body: v.starterName + ' opens the round — go around the table.' },
         { badge: '#7a1620', bg: 'linear-gradient(135deg,#4d0e14,#380a0f)', border: 'rgba(122,22,32,.5)', num: '2', numColor: '#ecdfc0', icon: ICON_STEP2, title: 'Drop Clues', body: 'Each player says one clue word. Go around 2–3 times — watch for hesitation.' },
         { badge: '#caa64f', bg: 'linear-gradient(135deg,#3a2a0a,#2a1e06)', border: 'rgba(200,162,76,.25)', num: '3', numColor: '#1a0e02', icon: ICON_STEP3, title: 'Cast Your Vote', body: 'Discuss, point fingers, and vote on who you think is the jester. Majority rules.' },
         { badge: '#b3202f', bg: 'linear-gradient(135deg,#5c1117,#3c0a10)', border: 'rgba(178,32,47,.4)', num: '4', numColor: '#fff', icon: ICON_STEP4, title: 'Unmask the Jester', body: 'When ready, tap below to reveal who the jester really was.', panelBg: 'rgba(178,32,47,.08)' },
