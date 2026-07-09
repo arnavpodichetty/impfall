@@ -70,7 +70,7 @@
     state = {
       screen: 'lobby', vote: null, viewed: {}, activePlayer: null, cardOpen: false, gameMode: 'roles',
       modal: null,
-      playerList: ['Arnav', 'Esha', 'Richard'],
+      playerList: ['Arnav', 'Richard', 'Esha'],
       addingPlayer: false, newName: '', editingIdx: null, editingVal: '',
       jesterCount: 1, jesterRandMin: 1, jesterRandMax: 3, randJesters: false, showCategory: true, showWord: true, jestersKnow: false, jesterGetsRole: false,
       timeLimit: 5,
