@@ -1,6 +1,6 @@
-// Impfall word/role data — Locations, Biomes, Historical Eras, and Movies catalogs.
+// Masq word/role data — Locations, Biomes, Historical Eras, and Movies catalogs.
 // Loaded as a plain script (not a dc-runtime file) so it can sit in its own
-// file; exposes everything on window.IMPFALL_LOCATIONS_DATA for
+// file; exposes everything on window.MASQ_LOCATIONS_DATA for
 // "index.html" to read at render time.
 (function () {
   var biomeCatalog = {
@@ -276,7 +276,7 @@
       'Legally Blonde','The Nightmare Before Christmas','Girl, Interrupted','Edward Scissorhands'],
   };
 
-  window.IMPFALL_LOCATIONS_DATA = {
+  window.MASQ_LOCATIONS_DATA = {
     'biomeCatalog': biomeCatalog,
     'locationCatalog': locationCatalog,
     'fakeLocationRoleCatalog': fakeLocationRoleCatalog,

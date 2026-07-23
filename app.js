@@ -1,5 +1,5 @@
 // Masq — plain React (no build step). Loaded after React/ReactDOM UMD
-// and impfall-locations-data.js.
+// and masq-locations-data.js.
 (function () {
   const h = React.createElement;
 
@@ -152,7 +152,7 @@
 
       const faceColors = ['#efe4c8', '#e7d9b6', '#e0cfa6', '#ecdfc0', '#e8ddb5', '#f0e6c9'];
       const lineColors = ['#7a1620', '#14254a', '#2e5bb0', '#6e141c', '#4a3010', '#7a1620'];
-      const { biomeCatalog, locationCatalog, fakeLocationRoleCatalog, fakeBiomeRoleCatalog, historicalErasCatalog, fakeHistoricalErasRoleCatalog, movieCatalog, fakeMovieRoleCatalog, wordOnlyCatalog } = window.IMPFALL_LOCATIONS_DATA;
+      const { biomeCatalog, locationCatalog, fakeLocationRoleCatalog, fakeBiomeRoleCatalog, historicalErasCatalog, fakeHistoricalErasRoleCatalog, movieCatalog, fakeMovieRoleCatalog, wordOnlyCatalog } = window.MASQ_LOCATIONS_DATA;
       const biomeNames = Object.keys(biomeCatalog);
       const locationNames = Object.keys(locationCatalog);
       const historicalEraNames = Object.keys(historicalErasCatalog);
